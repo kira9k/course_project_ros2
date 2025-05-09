@@ -1,0 +1,5 @@
+[0.016s] Invoking command in '/root/ros2_ws/build/bcr_bot': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /root/ros2_ws/build/bcr_bot -- -j4 -l4
+[0.043s] [0mCMake Error: The source directory "/root/ros2_ws/src/bcr_bot" does not exist.
+[0.043s] Specify --help for usage, or press the help button on the CMake GUI.[0m
+[0.043s] gmake: *** [Makefile:226: cmake_check_build_system] Error 1
+[0.046s] Invoked command in '/root/ros2_ws/build/bcr_bot' returned '2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /root/ros2_ws/build/bcr_bot -- -j4 -l4
