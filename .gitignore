@@ -4,5 +4,6 @@ __pycache__/
 
 # ROS
 build/
+log/
 logs/
 install/
