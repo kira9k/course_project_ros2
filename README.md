@@ -10,12 +10,13 @@
     - [Запуск симуляции](#запуск-симуляции)
     - [Картографирование с помощью SLAM Toolbox](#картографирование-с-помощью-slam-toolbox)
     - [Использование Nav2 с bcr_bot](#использование-nav2-с-bcr_bot)
+- [Заключение](#заключение)
 - [Благодаронсти](#благодарности)
 - [Список литературы](#список-литературы)
 
 
 ## Введение
-В данной курсовой работе рассматривается моделирование   мобильного робота с дифференциальной передачей в ROS2. Симуляция проводится в Gazebo с использованием камеры глубины, лидара, IMU и алгоритмов навигации.
+Автономная навигация — ключевая задача робототехники. Данная курсовая работа посвящена изучению и запуску готового проекта навигации робота bcr_bot с использованием ROS 2 и Nav2 в симулированной среде. Цель — освоить локализацию (AMCL), планирование пути и работу с сенсорами (лидар, IMU, Kinect). Проект основан на репозитории [bcr_bot](<https://github.com/blackcoffeerobotics/bcr_bot>) 
 
 ## Инструкции по сборке и запуску Docker-контейнера
 Для сборки Docker-образа необходимо выполнить bash-скрипт:
@@ -286,12 +287,14 @@ ros2 launch bcr_bot gazebo.launch.py \
 |```robot_namespace```      |```string```|Пространство имен для топиков и tf-фреймов|
 
 Для визуализации в RViz используется launch-файл ```rviz.launch.py```
+
 ```bash
 ros2 launch bcr_bot rviz.launch.py
 ```
 ![Визуализация в RViz](images/rviz_bcr.png)
 
 Также можно посмотреть изображения с камеры глубины, добавив в RViz элементы визуализации ```Image```
+
 ![Визуализация в RViz с Image](images/bcr_bot_rviz_with_Image.png)
 
 Данный проект содержит, также, стереокамеру. Ниже приведена команда для запуска 
@@ -299,7 +302,17 @@ ros2 launch bcr_bot rviz.launch.py
 ```bash
 ros2 launch stereo_image_proc stereo_image_proc.launch.py left_namespace:=bcr_bot/stereo_camera/left right_namespace:=bcr_bot/stereo_camera/right
 ```
+
 ![Визуализация в RViz с стереокамерой](images/bcrbot_rviz_stereo_enabled.png)
+
+Для просмотра данных с imu сенсора используется команад:
+```bash
+ros2 topic echo bcr_bot/imu
+```
+
+![Данные с IMU](images/bcr_bot_imu.png)
+
+В данном сообщении содержится метка времени, кватернион ориентации, угловая скорость, линейное ускорение и матрицы ковариаций.
 
 ### Картографирование с помощью SLAM Toolbox
 SLAM Toolbox — это пакет с открытым исходным кодом, предназначенный для картографирования окружающей среды с использованием лазерного сканирования и одометрии, а также для создания карты для автономной навигации.
@@ -310,15 +323,17 @@ ros2 launch bcr_bot mapping.launch.py
 ```
 
 Для управления роботом и картографирования местности используется Teleop Twist:
+
 ```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard cmd_vel:=/bcr_bot/cmd_vel
 ```
+
 ![Терминал teleop_twist_keyboard](images/teleop_key_terminal.png)
 
 Данный узел позволяет управлять роботом с клавиатуры, считывая нажатия клавиш и публикуя их в виде сообщений ```Twist```. Функциональность представлена в таблице ниже.
 
 Описание параметров:
-|Назначение|Клавиш|
+|Назначение|Клавиши|
 |:-------------------------------------------------------|:-------------:|
 |Движение вперед/назад                                   |```i```/```,```|
 |Поворот налево/направо                                  |```j```/```l```|
@@ -361,13 +376,15 @@ ros2 launch bcr_bot nav2.launch.py
 
 ![Навигация bcr_bot](images/bcr_bot_nav.gif)
 
+## Заключение
+В рамках курсовой работы был изучен и запущен проект навигации [bcr_bot](<https://github.com/blackcoffeerobotics/bcr_bot>), включающий локализацию, планирование пути и обработку данных сенсоров. Настройка Docker обеспечила воспроизводимость и изоляцию проекта.
 
 ## Благодарности
 Особая благодарность [Black Coffee Robotics](<https://github.com/blackcoffeerobotics>) за разработку репозитория [bcr_bot](<https://github.com/blackcoffeerobotics/bcr_bot>), который послужил основой для данной работы. Код использован в соответствии с [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0). Спасибо за ценный вклад в мое обучение!
 
 ## Список литературы
-[1] https://docs.exponenta.ru/nav/ug/localize-turtlebot-using-monte-carlo-localization.html#:~:text=%D0%9B%D0%BE%D0%BA%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F%20%D0%9C%D0%BE%D0%BD%D1%82%D0%B5%2D%D0%9A%D0%B0%D1%80%D0%BB%D0%BE%20(MCL),%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%B5%20%D0%B4%D0%B2%D0%B8%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B8%20%D0%BE%D0%B1%D0%BD%D0%B0%D1%80%D1%83%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F%20%D1%80%D0%BE%D0%B1%D0%BE%D1%82%D0%B0.
+[1] Локализация TurtleBot с использованием метода Монте-Карло // Exponenta Docs. — URL: https://docs.exponenta.ru/nav/ug/localize-turtlebot-using-monte-carlo-localization.html (дата обращения: 09.05.2025).
 
 [2] С. Трун, В. Бергард и Д. Фокс, вероятностная робототехника. Кембридж, MA: нажатие MIT, 2005.
 
-[3] https://habr.com/ru/companies/otus/articles/748470/
+[3] ROS 2 для начинающих: от установки до создания робота // Habr. — URL: https://habr.com/ru/companies/otus/articles/748470/ (дата обращения: 09.05.2025).
